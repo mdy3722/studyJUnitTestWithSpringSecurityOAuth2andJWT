@@ -16,12 +16,15 @@
 
 ---
 ### 🔧 기술 스택
-|   구분    |   기술    |
-| Backend |  Java17, Spring Boot   |
-| DB |   PostgreSQL, JPA  |
-| Auth | Spring Security, OAuth-Client, jjwt   |
-|OAuth API| Google, Kakao |
-|Test| JUni5, Mockito, AssertJ |
+🔧 기술 스택
+
+| 구분      | 기술                                      |
+|-----------|-------------------------------------------|
+| Backend   | Java 17, Spring Boot                      |
+| DB        | PostgreSQL, JPA                           |
+| Auth      | Spring Security, OAuth-Client, jjwt       |
+| OAuth API | Google, Kakao                             |
+| Test      | JUnit5, Mockito, AssertJ                   |
 
 ---
 
@@ -33,3 +36,4 @@
 ### 📝 스터디 하면서 작성한 기술 블로그
 [단위테스트 테스트 코드 작성](https://velog.io/@mdy3722/Junit5%EC%99%80-AssertJ%EB%A5%BC-%ED%99%9C%EC%9A%A9%ED%95%98%EC%97%AC-%EB%8B%A8%EC%9C%84%ED%85%8C%EC%8A%A4%ED%8A%B8%EB%A5%BC-%EC%A7%84%ED%96%89)
 [Mockito.Spy() 잘못된 사용으로 인한 문제 발생과 해결](https://velog.io/@mdy3722/%EC%9E%98%EB%AA%BB%EB%90%9C-Spy-%EC%82%AC%EC%9A%A9%EC%9D%B4-%EB%B6%80%EB%A5%B8-%ED%85%8C%EC%8A%A4%ED%8A%B8-%EC%8B%A4%ED%8C%A8)
+
