@@ -1,0 +1,60 @@
+server:
+  port: 8080
+
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:postgresql://localhost:5432/finlight
+    username: postgres
+    password: 1234
+
+  jpa:
+    hibernate:
+      ddl-auto: update # 서버 실행 시 변경된 엔티티 필드에 맞춰 테이블 컬럼을 추가/수정 -> 기존 데이터는 유지, 개발 중 스키마 변경이 생겨도 데이터 삭제 없이 반영이 가능하지만 컬럼 삭제나 제약조건 등 복잡한 일부 변경이 반영되지 않음. #create # 서버 실행 시마다 DB 테이블을 새로 생성, 기존 테이블이 있으면 모두 삭제 후 다시 생성 => 개발 초기에 모델 변경사항을 바로바로 반영 가능 => 단점: 데이터 유지 불가. 기존 데이터 모두 날아감
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+    properties:
+      hibernate:
+        show_sql: false   # Hibernate 기본 System.out 비활성화
+        format_sql: true   # log가 찍힐 때 sql이 보기 좋게 출력 됨
+        highlight_sql: true  # 컬러 적용 (콘솔에서만 효과)
+
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: ${GOOGLE_CLIENT_ID}
+            client-secret: ${GOOGLE_SECRET}
+            scope:
+              - email
+              - profile
+            redirect-uri: ${GOOGLE_REDIRECT_URI}
+          kakao:
+            client-id: ${KAKAO_CLIENT_ID}
+            authorization-grant-type: authorization_code
+            client-name: Kakao
+            redirect-uri: ${KAKAO_REDIRECT_URI}
+
+
+        provider:
+          kakao:
+            authorization-uri: https://kauth.kakao.com/oauth/authorize
+            token-uri: https://kauth.kakao.com/oauth/token
+            user-info-uri: https://kapi.kakao.com/v2/user/me
+            user-name-attribute: id
+
+jwt:
+  secret: ${JWT_SECRET}
+  access-expiration: ${JWT_ACCESS_EXPIRATION}
+  refresh-expiration: ${JWT_REFRESH_EXPIRATION}
+
+
+logging:
+  pattern:
+    console: "[%d{HH:mm:ss.SSS}][%-5level][%logger.%method:%line] - %msg%n"   # 예시 : [15:23:12.123][INFO ][com.example.MyService.doSomething:42] - 사용자 로그인 완료
+  level:
+    org:
+      hibernate:
+        type.descriptor.sql: trace   # 쿼리에 바인딩된 파라미터도 함께 출력
+        SQL: debug                   # 실행된 SQL을 로그에 출력
