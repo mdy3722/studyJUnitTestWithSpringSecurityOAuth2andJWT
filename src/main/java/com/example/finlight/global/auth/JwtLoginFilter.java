@@ -22,12 +22,11 @@ import java.util.UUID;
 // 일반 로그인 처리
 public class JwtLoginFilter extends UsernamePasswordAuthenticationFilter {
 
-    private final AuthenticationManager authenticationManager;
     private final JwtUtil jwtUtil;
 
     public JwtLoginFilter(AuthenticationManager authenticationManager, JwtUtil jwtUtil) {
-        this.authenticationManager = authenticationManager;
         this.jwtUtil = jwtUtil;
+        setAuthenticationManager(authenticationManager);
     }
 
     // 로그인 시도: JSON 요청을 파싱해서 Authentication 객체 생성
@@ -44,7 +43,7 @@ public class JwtLoginFilter extends UsernamePasswordAuthenticationFilter {
             UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(username, password);
 
             // AuthenticationManager에게 "이 사용자를 인증해달라"고 요청
-            return authenticationManager.authenticate(authToken);
+            return getAuthenticationManager().authenticate(authToken);
 
         } catch (IOException e) {
             throw new RuntimeException(e);

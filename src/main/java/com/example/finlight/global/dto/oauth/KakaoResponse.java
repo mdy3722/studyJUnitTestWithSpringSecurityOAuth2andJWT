@@ -1,11 +1,9 @@
-package com.example.finlight.global.dto;
-
-import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
+package com.example.finlight.global.dto.oauth;
 
 import java.util.Map;
 import java.util.UUID;
 
-public class KakaoResponse implements OAuth2Response{
+public class KakaoResponse implements OAuth2Response {
 
     private final Map<String, Object> attribute;
 
@@ -28,10 +26,14 @@ public class KakaoResponse implements OAuth2Response{
     public String getEmail() {
         Map<String, Object> kakaoAccount = (Map<String, Object>) attribute.get("kakao_account");
         String email = (String) kakaoAccount.get("email");
-        if (email == null || email.isEmpty()) {
-            throw new OAuth2AuthenticationException("카카오 계정에서 이메일 정보를 가져올 수 없습니다.");
+
+        if (email == null || email.isBlank()) {   // 비즈니스 신청을 안하면 사용자 정보 동의항목 중 이메일에 대한 권한이 없기 때문에 email이 null이 찍힘
+            // 이메일 없으면 더미값 생성해서 반환
+            String pid = String.valueOf(attribute.get("id"));
+            return "kakao_" + pid + "@kakao.com"; // 예: kakao_123456@kakao.com
         }
         return email;
+
     }
 
     @SuppressWarnings("unchecked")

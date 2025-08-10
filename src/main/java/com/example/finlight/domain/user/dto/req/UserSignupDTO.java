@@ -1,9 +1,9 @@
 package com.example.finlight.domain.user.dto.req;
 
 import jakarta.validation.constraints.*;
+import lombok.Getter;
 
-import java.security.AuthProvider;
-
+@Getter
 public class UserSignupDTO {
     @Email(message = "올바른 이메일 형식이 아닙니다")
     @NotBlank(message = "이메일은 필수입니다")
@@ -15,6 +15,7 @@ public class UserSignupDTO {
     @Pattern(regexp = "^[가-힣a-zA-Z0-9_]+$", message = "특수문자 사용 불가")
     private String nickname;
 
-    @NotNull(message = "인증 제공자는 필수입니다")
-    private AuthProvider provider;
+    @NotBlank(message = "비밀번호는 필수입니다")
+    @Size(min = 8, max = 225, message = "비밀번호는 8자 이상")
+    private String password;
 }

@@ -3,9 +3,10 @@ package com.example.finlight.global.auth.oauth;
 import com.example.finlight.domain.user.entity.User;
 import com.example.finlight.domain.user.repository.UserRepository;
 import com.example.finlight.global.auth.PrincipalDetails;
-import com.example.finlight.global.dto.GoogleResponse;
-import com.example.finlight.global.dto.KakaoResponse;
-import com.example.finlight.global.dto.OAuth2Response;
+import com.example.finlight.global.dto.oauth.GoogleResponse;
+import com.example.finlight.global.dto.oauth.KakaoResponse;
+import com.example.finlight.global.dto.oauth.OAuth2Response;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
@@ -14,6 +15,7 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
 // OAuth2 사용자 정보 로딩 -> 최종적으로 OAuth2User를 반환해야 함 -> OAuth2User로 username을 생성하고 username을 통해 User를 DB에서 조회 -> 없다면 새로 유저 등록, 있다면 PrincipalDetails로 감싸서 반환
+@Slf4j
 @Service
 public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
@@ -34,6 +36,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
         // 어떤 소셜 로그인인지 (ex. kakao, google 등)
         String provider = userRequest.getClientRegistration().getRegistrationId();
+        log.debug("[OAUTH] start loadUser: regId={}", provider);
 
         // 기본 OAuth2UserService를 통해 사용자 정보 받아오기
         OAuth2User oAuth2User = loadUserFromProvider(userRequest);
@@ -64,8 +67,12 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
                     username,
                     passwordEncoder.encode("oauth2")  // 더미 PW
             );
+            System.out.println("[OAUTH] before save username=" + user.getUsername());
             userRepository.save(user);
+            System.out.println("[OAUTH] saved id=" + user.getId() + ", saved username=" + user.getUsername());
         }
+
+        log.debug("[OAUTH] end loadUser");
         // 7. 반환: 소셜 사용자 → PrincipalDetails로 감싸서 반환 -> OAuth2LoginAuthenticationFilter로 돌아감
         return new PrincipalDetails(user, oAuth2User.getAttributes());
 

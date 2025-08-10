@@ -1,10 +1,12 @@
 package com.example.finlight.domain.user.entity;
 
-public enum Role {
-    ROLE_USER,
-    ROLE_ADMIN;
+import org.springframework.security.core.GrantedAuthority;
 
-    public String getAuthority() {
-        return name();  //
+public enum Role implements GrantedAuthority {
+    USER,
+    ADMIN;
+
+    @Override public String getAuthority() {
+        return "ROLE_" + name();
     }
 }

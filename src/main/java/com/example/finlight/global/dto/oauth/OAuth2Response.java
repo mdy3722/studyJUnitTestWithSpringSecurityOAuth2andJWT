@@ -1,4 +1,4 @@
-package com.example.finlight.global.dto;
+package com.example.finlight.global.dto.oauth;
 
 public interface OAuth2Response {
     String getProvider();

@@ -1,4 +1,4 @@
-package com.example.finlight.global.dto;
+package com.example.finlight.global.dto.oauth;
 
 import java.util.Map;
 import java.util.UUID;

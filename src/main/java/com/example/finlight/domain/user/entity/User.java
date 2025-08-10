@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
-@Table(name = "user") // 테이블명 단수로 통일
+@Table(name = "users") // 테이블명 단수로 통일 -> 하려고 했으나!! PostgreSQL에 user는 키워드라 구문 오류 뜸. users로 변경.
 @Getter   // 읽기 전용 getter만 제공 (캡슐화 원칙)
 @NoArgsConstructor(access = AccessLevel.PROTECTED) // JPA 요구사항, 외부 생성 방지
 public class User {
@@ -25,7 +25,7 @@ public class User {
     @Column(name = "nickname", nullable = false, unique = true, length = 50)
     private String nickname;
 
-    @Column(name = "password", nullable = false, length = 100)
+    @Column(name = "password", nullable = false, length = 225)
     private String password;
 
     @Column(name = "username", nullable = false, unique = true, length = 300)
@@ -53,7 +53,7 @@ public class User {
     }
 
     public static User createOAuthUser(String email, String nickname, String username, String password) {
-        return createUser(email, nickname, password, username, Role.ROLE_USER);
+        return createUser(email, nickname, password, username, Role.USER);
     }
 
     public void changeNickname(String newNickname) {

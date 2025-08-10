@@ -28,11 +28,9 @@ public class SecurityConfig {
     private final JwtUtil jwtUtil;
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        AuthenticationManager authenticationManager = http.getSharedObject(AuthenticationManager.class);
+    public SecurityFilterChain securityFilterChain(HttpSecurity http, AuthenticationManager authenticationManager) throws Exception {
 
         JwtLoginFilter jwtLoginFilter = new JwtLoginFilter(authenticationManager, jwtUtil); // DI 아닌 직접 생성 (JwtLoginFilter는 Bean 등록을 안하므로)
-        jwtLoginFilter.setFilterProcessesUrl("/api/auth/login");    // 설정 안하면 기본 uri는 /login
 
         return http
                 // JWT + OAuth2 인증 방식이므로
@@ -44,7 +42,7 @@ public class SecurityConfig {
                         session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/", "/auth/**", "/oauth2/**").permitAll()
+                        .requestMatchers("/", "/api/users", "/oauth2/**", "/login").permitAll()
                         .anyRequest().authenticated()     // 그 외 요청은 인증 필요
                 )
 
@@ -53,10 +51,16 @@ public class SecurityConfig {
                         .successHandler(oAuth2SuccessHandler)    // 로그인 성공 이후 처리
                 )
 
-                // JWT 인증 필터: 매 요청마다 JWT 헤더를 검증하여 인증 처리 -> 토큰 없으면 null인 상태로 다음 필터로 넘김
-                .addFilterBefore(jwtAuthenticationFilter, JwtLoginFilter.class)
-                // 일반 로그인 필터: ID/PW 로그인 요청 (/api/auth/login) 처리, JWT 발급
-                .addFilterBefore(jwtLoginFilter, UsernamePasswordAuthenticationFilter.class)
+                // JWT 인증 필터: 매 요청의 Authorization 헤더에 담긴 JWT를 검증하고,
+                // 유효하면 SecurityContext에 인증 객체를 저장한다.
+                // UsernamePasswordAuthenticationFilter 실행 전에 동작해야,
+                // 로그인 요청을 제외한 나머지 요청에서 JWT 기반 인증이 먼저 처리됨.
+                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+
+                // 로그인 처리 필터: 기본 UsernamePasswordAuthenticationFilter를 교체하여
+                // /login 요청의 JSON 바디(email, password)를 읽고 인증을 수행한 뒤 JWT를 발급한다.
+                // 기존 HTML Form 로그인 방식 대신 REST API 방식으로 로그인 흐름을 완전히 대체한다.
+                .addFilterAt(jwtLoginFilter, UsernamePasswordAuthenticationFilter.class)
 
                 .build();
     }
@@ -67,11 +71,6 @@ public class SecurityConfig {
     public AuthenticationManager authenticationManager(
             AuthenticationConfiguration configuration) throws Exception {
         return configuration.getAuthenticationManager();
-    }
-
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
     }
 
 }
