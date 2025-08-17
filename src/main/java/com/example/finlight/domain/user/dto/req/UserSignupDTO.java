@@ -1,9 +1,13 @@
 package com.example.finlight.domain.user.dto.req;
 
 import jakarta.validation.constraints.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
+@AllArgsConstructor
+@NoArgsConstructor
 public class UserSignupDTO {
     @Email(message = "올바른 이메일 형식이 아닙니다")
     @NotBlank(message = "이메일은 필수입니다")

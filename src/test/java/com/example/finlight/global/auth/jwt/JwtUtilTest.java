@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.time.Duration;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -25,8 +26,8 @@ class JwtUtilTest {
     // 테스트용 비밀키 (실제 운영에서는 더 복잡해야 함)
     // 테스트용 설정값들
     private final String TEST_SECRET_KEY = "mySecretKeyForTestingJwtTokenGenerationAndValidation12345678901234567890"; // 64바이트 이상
-    private final long TEST_ACCESS_TOKEN_VALIDITY = 3600; // 1시간 (초 단위)
-    private final long TEST_REFRESH_TOKEN_VALIDITY = 1209600; // 2주 (초 단위)
+    private final Duration TEST_ACCESS_TOKEN_VALIDITY = Duration.ofSeconds(3600); // 1시간 (초 단위)
+    private final Duration TEST_REFRESH_TOKEN_VALIDITY = Duration.ofSeconds(1209600); // 2주 (초 단위)
 
     @BeforeEach   // 각 테스트 메소드 실행 전에 먼저 실행
     void setUp() {
@@ -61,8 +62,11 @@ class JwtUtilTest {
     @Test
     @DisplayName("리프레시 토큰이 정상 생성되어야 한다.")
     void createRefreshTokenTest() {
+        // Given - 테스트용 데이터/환경 준비 (사용자 Id 준비)
+        UUID testUserId = UUID.randomUUID();
+
         // When - 리프레시 토큰 생성
-        String refreshToken = jwtUtil.createRefreshToken();
+        String refreshToken = jwtUtil.createRefreshToken(testUserId);
 
         // Then - 테스트 검증
         assertThat(refreshToken)

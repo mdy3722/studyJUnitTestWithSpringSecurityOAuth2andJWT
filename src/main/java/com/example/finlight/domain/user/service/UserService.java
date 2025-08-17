@@ -38,7 +38,7 @@ public class UserService {
         if (userRepository.findByUsername(username).isPresent())
             throw new CustomException(ErrorCode.DUPLICATE_USER);
         if (userRepository.existsByNickname(req.getNickname()))
-            throw new CustomException(ErrorCode.USER_NOT_FOUND);
+            throw new CustomException(ErrorCode.DUPLICATE_USER);
 
         User user = User.createUser(
                 email,
