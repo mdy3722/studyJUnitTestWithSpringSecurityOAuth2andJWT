@@ -7,7 +7,7 @@
 
 ---
 
-### 😊 요구사항과 구현할 기능
+### 😊 요구사항 및 구현 내용
 - Spring Security를 활용하여 인증/인가 시스템 구현
 - OAuth-Client를 활용해 Google/Kakao OAuth 로그인 API 구현
 - 일반 로그인도 허용
@@ -15,6 +15,13 @@
 - Swagger 기반 API 자동 문서화
 - Redis에 리프레시 토큰 보관 및 관리
 - 사용자 정보 조회
+
+---
+
+### 진행한 단위 테스트
+- CustomOAuth2UserService 코드 (신규 회원인 경우 회원가입, 기존 회원인 경우 로그인, 지원하지 않는 소셜 로그인 예외 처리)
+- UserService 코드 (일반 회원가입, 토큰 재발행, 사용자 정보 조회, 로그아웃)
+- JwtUtil 코드 (액세스/리프레시 토큰 생성, 토큰 검증, 사용자ID 추출)
 
 ---
 ### 🔧 기술 스택
@@ -36,6 +43,7 @@
 ### 📝 스터디 하면서 작성한 기술 블로그
 [단위테스트 테스트 코드 작성](https://velog.io/@mdy3722/Junit5%EC%99%80-AssertJ%EB%A5%BC-%ED%99%9C%EC%9A%A9%ED%95%98%EC%97%AC-%EB%8B%A8%EC%9C%84%ED%85%8C%EC%8A%A4%ED%8A%B8%EB%A5%BC-%EC%A7%84%ED%96%89)  
 [Mockito.Spy() 잘못된 사용으로 인한 문제 발생과 해결](https://velog.io/@mdy3722/%EC%9E%98%EB%AA%BB%EB%90%9C-Spy-%EC%82%AC%EC%9A%A9%EC%9D%B4-%EB%B6%80%EB%A5%B8-%ED%85%8C%EC%8A%A4%ED%8A%B8-%EC%8B%A4%ED%8C%A8)
+
 
 
 
