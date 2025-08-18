@@ -1,4 +1,4 @@
-<h1 align="center">🔐 OAuth2 · JWT · Swagger · Redis · JUnit5 공부를 위한 실습</h1>
+<h1 align="center">🔐 OAuth2 · JWT · Swagger · Redis · JUnit5 실습</h1>
 <p align="center">Spring Security 기반 인증/인가와 JUnit5 테스트 학습 레포지토리</p>
 
 <p align="center">
@@ -87,70 +87,7 @@ get [키 이름]   # 값 확인인
 
 ## 📸 API 테스트 스냅샷
 
-<details>
-  <summary>브라우저 테스트</summary>
-
-  <figure>
-    <img src="./docs/c.png" width="820" alt="액세스 토큰 응답">
-    <figcaption><strong>로그인 성공 후 액세스 토큰을 응답으로 수신</strong></figcaption>
-  </figure>
-
-  <figure>
-    <img src="./docs/d.png" width="820" alt="리프레시 토큰 쿠키">
-    <figcaption><strong>리프레시 토큰은 HttpOnly 쿠키로 저장(SameSite=Lax, 로컬 http는 Secure=false)</strong></figcaption>
-  </figure>
-</details>
-
-<details>
-  <summary>포스트맨 테스트</summary>
-
-  <figure>
-    <img src="./docs/f.png" width="820" alt="회원가입">
-    <figcaption><strong>일반 회원가입</strong></figcaption>
-  </figure>
-
-  <figure>
-    <img src="./docs/g.png" width="820" alt="일반 로그인">
-    <figcaption><strong>일반 로그인 → AccessToken/RefreshToken 발급</strong></figcaption>
-  </figure>
-
-  <figure>
-    <img src="./docs/h.png" width="820" alt="내 정보 조회">
-    <figcaption><strong>유저 정보 조회</strong></figcaption>
-  </figure>
-</details>
-
-<details>
-  <summary>DB 확인</summary>
-
-  <figure>
-    <img src="./docs/i.png" width="820" alt="DB 유저 테이블 조회">
-    <figcaption><strong>DB 유저 테이블 조회</strong></figcaption>
-  </figure>
-</details>
-
-<details>
-  <summary>Redis에 저장된 Refresh Token 확인</summary>
-
-  <figure>
-    <img src="./docs/j.png" width="820" alt="로그아웃 시 Refresh Token 삭제">
-    <figcaption><strong>로그아웃 시 Redis에서 Refresh Token 삭제</strong></figcaption>
-  </figure>
-
-  <figure>
-    <img src="./docs/k.png" width="820" alt="토큰 재발급 시 Refresh Token 회전">
-    <figcaption><strong>토큰 재발급 시 Redis에 저장된 기존 Refresh Token 회전(갱신)</strong></figcaption>
-  </figure>
-</details>
-
-<details>
-  <summary>스웨거 연동 (API 명세서)</summary>
-
-  <figure>
-    <img src="./docs/l.png" width="820" alt="Swagger UI">
-    <figcaption><strong>Swagger UI 화면</strong></figcaption>
-  </figure>
-</details>
+<details> <summary>브라우저 테스트</summary> <p align="center"> <img src="./docs/c.png" width="820" alt="액세스 토큰 응답"><br> <strong><sub>로그인 성공 후 액세스 토큰을 응답으로 수신</sub></strong> </p> <p align="center"> <img src="./docs/d.png" width="820" alt="리프레시 토큰 쿠키"><br> <strong><sub>리프레시 토큰은 HttpOnly 쿠키로 저장</sub></strong> </p> </details> <details> <summary>포스트맨 테스트</summary> <p align="center"> <img src="./docs/f.png" width="820" alt="일반 회원가입"><br> <strong><sub>일반 회원가입</sub></strong> </p> <p align="center"> <img src="./docs/g.png" width="820" alt="일반 로그인"><br> <strong><sub>일반 로그인 → AccessToken/RefreshToken 발급</sub></strong> </p> <p align="center"> <img src="./docs/h.png" width="820" alt="유저 정보 조회"><br> <strong><sub>Bearer AT로 /api/users/me 조회</sub></strong> </p> </details> <details> <summary>DB 확인</summary> <p align="center"> <img src="./docs/i.png" width="820" alt="DB 사용자 테이블 조회"><br> <strong><sub>DB 사용자 테이블 조회</sub></strong> </p> </details> <details> <summary>Redis 리프레시 토큰</summary> <p align="center"> <img src="./docs/j.png" width="820" alt="로그아웃 시 RT 삭제"><br> <strong><sub>로그아웃 시 Redis에서 Refresh Token 삭제</sub></strong> </p> <p align="center"> <img src="./docs/k.png" width="820" alt="재발급 시 RT 회전"><br> <strong><sub>재발급 시 Redis의 기존 Refresh Token 회전(갱신)</sub></strong> </p> </details> <details> <summary>스웨거 연동 (API 명세서)</summary> <p align="center"> <img src="./docs/l.png" width="820" alt="Swagger UI"><br> <strong><sub>Swagger UI 화면</sub></strong> </p> </details>
 
 ---
 
@@ -164,6 +101,7 @@ get [키 이름]   # 값 확인인
 ## 📝 스터디 하면서 작성한 기술 블로그
 [단위테스트 테스트 코드 작성](https://velog.io/@mdy3722/Junit5%EC%99%80-AssertJ%EB%A5%BC-%ED%99%9C%EC%9A%A9%ED%95%98%EC%97%AC-%EB%8B%A8%EC%9C%84%ED%85%8C%EC%8A%A4%ED%8A%B8%EB%A5%BC-%EC%A7%84%ED%96%89)  
 [Mockito.Spy() 잘못된 사용으로 인한 문제 발생과 해결](https://velog.io/@mdy3722/%EC%9E%98%EB%AA%BB%EB%90%9C-Spy-%EC%82%AC%EC%9A%A9%EC%9D%B4-%EB%B6%80%EB%A5%B8-%ED%85%8C%EC%8A%A4%ED%8A%B8-%EC%8B%A4%ED%8C%A8)
+
 
 
 
