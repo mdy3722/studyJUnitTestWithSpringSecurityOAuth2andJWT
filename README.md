@@ -18,7 +18,7 @@
 
 ---
 
-### 진행한 단위 테스트
+### ⭐ 진행한 단위 테스트
 - CustomOAuth2UserService 코드 (신규 회원인 경우 회원가입, 기존 회원인 경우 로그인, 지원하지 않는 소셜 로그인 예외 처리)
 - UserService 코드 (일반 회원가입, 토큰 재발행, 사용자 정보 조회, 로그아웃)
 - JwtUtil 코드 (액세스/리프레시 토큰 생성, 토큰 검증, 사용자ID 추출)
@@ -35,6 +35,42 @@
 
 ---
 
+### 💪🏻 API 동작 방식 및 실제 API 테스트
+1️⃣ **OAuth 로그인 방식** :  [GET요청] localhost:8080/oauth2/authorization/{registrationId}
+registrationId은 kakao 또는 google
+2️⃣ **일반 로그인 방식** :  [GET요청] localhost:8080/login
+
+**API 테스트**
+<details>
+  <summary>📷 브라우저 테스트</summary>
+  ![로그인 성공 후 액세스 토큰을 응답으로 받음](./docs/c.png)
+  ![리프레시 토큰은 HttpOnly 쿠키로 받음](./docs/d.png)
+</details>
+
+<details>
+  <summary>📷 포스트맨 테스트</summary>
+  ![일반 로그인 회원가입](./docs/f.png)
+  ![일반 로그인](./docs/g.png)
+  ![유저 정보 조회](./docs/h.png)
+</details>
+
+<details>
+  <summary>📷 DB 확인</summary>
+  ![DB에서 유저 테이블 조회](./docs/i.png)
+</details>
+
+<details>
+  <summary>📷 Redis 리프레시 토큰 확인</summary>
+  ![로그아웃 시 Redis에서 토큰 삭제 성공](./docs/j.png)
+  ![토큰 재발행 시 Redis에 있는 기존 리프레시 토큰 갱신 성공](./docs/k.png)
+</details>
+
+<details>
+  <summary>📷 스웨거 연동 (API 명세서)</summary>
+  ![스웨거 명세서 UI](./docs/l.png)
+</details>
+---
+
 ### 📖 스터디 방식
 - 유튜브 강의
 - Claude AI 활용
@@ -43,6 +79,7 @@
 ### 📝 스터디 하면서 작성한 기술 블로그
 [단위테스트 테스트 코드 작성](https://velog.io/@mdy3722/Junit5%EC%99%80-AssertJ%EB%A5%BC-%ED%99%9C%EC%9A%A9%ED%95%98%EC%97%AC-%EB%8B%A8%EC%9C%84%ED%85%8C%EC%8A%A4%ED%8A%B8%EB%A5%BC-%EC%A7%84%ED%96%89)  
 [Mockito.Spy() 잘못된 사용으로 인한 문제 발생과 해결](https://velog.io/@mdy3722/%EC%9E%98%EB%AA%BB%EB%90%9C-Spy-%EC%82%AC%EC%9A%A9%EC%9D%B4-%EB%B6%80%EB%A5%B8-%ED%85%8C%EC%8A%A4%ED%8A%B8-%EC%8B%A4%ED%8C%A8)
+
 
 
 
