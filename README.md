@@ -1,103 +1,94 @@
-# ✍🏻 레포지토리의 주 목적 : JUni5를 활용한 단위테스트와 통합테스트를 학습
-1. 프로젝트의 요구사항에 맞게 먼저 서비스 코드를 작성 (즉, TDD 방식은 아님‼️)
-2. 작성된 서비스 코드를 가장 작은 단위로 나누어 메소드 별로 단위 테스트를 진행
-3. 단위 테스트가 성공한 후, 연관된 모듈/클래스 간의 통합 테스트 진행
+<h1 align="center">🔐 OAuth2 · JWT · Swagger · Redis · JUnit5 공부를 위한 실습</h1>
+<p align="center">Spring Security 기반 인증/인가와 JUnit5 테스트 학습 레포지토리</p>
 
-위 작업을 기반으로 JUnit5에 보다 익숙해지고 적절한 테스트 코드를 작성하는 역량을 기르기 위함.
-
----
-
-### 😊 요구사항 및 구현 내용
-- Spring Security를 활용하여 인증/인가 시스템 구현
-- OAuth-Client를 활용해 Google/Kakao OAuth 로그인 API 구현
-- 일반 로그인도 허용
-- REST API를 설계할 것
-- Swagger 기반 API 자동 문서화
-- Redis에 리프레시 토큰 보관 및 관리
-- 사용자 정보 조회
+<p align="center">
+  <img alt="Java" src="https://img.shields.io/badge/Java-17-007396">
+  <img alt="Spring Boot" src="https://img.shields.io/badge/Spring%20Boot-3.x-6DB33F">
+  <img alt="JUnit5" src="https://img.shields.io/badge/JUnit-5-25A162">
+  <img alt="Redis" src="https://img.shields.io/badge/Redis-RT%20Store-EF3934">
+  <img alt="Swagger" src="https://img.shields.io/badge/OpenAPI-Swagger%20UI-85EA2D">
+</p>
 
 ---
 
-### ⭐ 진행한 단위 테스트
-- CustomOAuth2UserService 코드 (신규 회원인 경우 회원가입, 기존 회원인 경우 로그인, 지원하지 않는 소셜 로그인 예외 처리)
-- UserService 코드 (일반 회원가입, 토큰 재발행, 사용자 정보 조회, 로그아웃)
-- JwtUtil 코드 (액세스/리프레시 토큰 생성, 토큰 검증, 사용자ID 추출)
+## 📌 레포 목적
+1. 프로젝트 요구사항에 맞춰 서비스 코드를 먼저 작성(TDD 아님)
+2. 서비스를 가장 작은 단위로 나눠 **메서드 단위 테스트** 작성
+3. 단위 테스트 통과 후 **모듈/클래스 간 통합 테스트** 수행
 
----
-### 🔧 기술 스택
-| 구분      | 기술                                      |
-|-----------|-------------------------------------------|
-| Backend   | Java 17, Spring Boot                      |
-| DB        | PostgreSQL, JPA, Redis                           |
-| Auth      | Spring Security, OAuth-Client, jjwt       |
-| OAuth API | Google, Kakao                             |
-| Test      | JUnit5, Mockito, AssertJ                   |
+→ JUnit5에 익숙해지고 “적절한 테스트 코드”를 작성하는 역량을 목표로 합니다.
 
 ---
 
-### 💪🏻 API 동작 방식 및 실제 API 테스트
-1️⃣ **OAuth 로그인 방식** :  [GET요청] localhost:8080/oauth2/authorization/{registrationId}  
-registrationId은 kakao 또는 google  
-2️⃣ **일반 로그인 방식** :  [GET요청] localhost:8080/login  
-
-**API 테스트**
-<details>
-  <summary>📷 브라우저 테스트</summary>
-
-  ![로그인 성공 후 액세스 토큰을 응답으로 받음](./docs/c.png)  
-  <sub>로그인 성공 후 액세스 토큰을 응답으로 받음</sub>
-
-  ![리프레시 토큰은 HttpOnly 쿠키로 받음](./docs/d.png)  
-  <sub>리프레시 토큰은 HttpOnly 쿠키로 받음</sub>
-</details>
-
-<details>
-  <summary>📷 포스트맨 테스트</summary>
-
-  ![일반 로그인 회원가입](./docs/f.png)  
-  <sub>일반 로그인 회원가입</sub>
-
-  ![일반 로그인](./docs/g.png)  
-  <sub>일반 로그인</sub>
-
-  ![유저 정보 조회](./docs/h.png)  
-  <sub>유저 정보 조회</sub>
-</details>
-
-<details>
-  <summary>📷 DB 확인</summary>
-
-  ![DB에서 유저 테이블 조회](./docs/i.png)  
-  <sub>DB에서 유저 테이블 조회</sub>
-</details>
-
-<details>
-  <summary>📷 Redis 리프레시 토큰 확인</summary>
-
-  ![로그아웃 시 Redis에서 토큰 삭제 성공](./docs/j.png)  
-  <sub>로그아웃 시 Redis에서 토큰 삭제 성공</sub>
-
-  ![토큰 재발행 시 Redis에 있는 기존 리프레시 토큰 갱신 성공](./docs/k.png)  
-  <sub>토큰 재발행 시 Redis에 있는 기존 리프레시 토큰 갱신 성공</sub>
-</details>
-
-<details>
-  <summary>📷 스웨거 연동 (API 명세서)</summary>
-
-  ![스웨거 명세서 UI](./docs/l.png)  
-  <sub>스웨거 명세서 UI</sub>
-</details>
+## ✅ 요구사항 & 구현
+- Spring Security로 **인증/인가**
+- OAuth Client로 **Google/Kakao OAuth 로그인**
+- **일반 로그인**도 지원
+- **REST API** 설계
+- **Swagger(OpenAPI) 자동 문서화**
+- **Redis**에 **Refresh Token 보관**
+- **사용자 정보 조회**
 
 ---
 
-### 📖 스터디 방식
+## 🧪 진행한 단위 테스트
+- **CustomOAuth2UserService**  
+  신규 회원 → 회원가입, 기존 회원 → 로그인, 미지원 소셜 예외 처리
+- **UserService**  
+  일반 회원가입, 토큰 재발행, 사용자 정보 조회, 로그아웃
+- **JwtUtil**  
+  Access/Refresh 토큰 생성, 검증, 사용자 ID 추출
+
+---
+
+## 🛠 기술 스택
+| 구분 | 기술 |
+|---|---|
+| Backend | Java 17, Spring Boot |
+| DB | PostgreSQL, JPA, Redis |
+| Auth | Spring Security, OAuth-Client, jjwt |
+| OAuth API | Google, Kakao |
+| Test | JUnit5, Mockito, AssertJ |
+
+---
+
+## 🚀 빠른 시작
+```bash
+# 실행
+./gradlew bootRun
+
+# Swagger UI
+open http://localhost:8080/swagger-ui.html
+```
+
+---
+
+## 🔑 인증 플로우 요약
+- 소셜 로그인 진입: GET /oauth2/authorization/{kakao|google}
+- 콜백(백엔드 수신): /login/oauth2/code/{registrationId}
+- 일반 로그인: POST `/api/auth/login`
+- 로그인 성공 후 access token은 Request Body, refresh token은 HttpOnly 쿠키로 응답
+- 토큰 재발급: POST /api/users/refresh (refresh token 쿠키 필요)
+- 로그아웃: POST /api/users/logout
+  
+---
+
+## 📸 API 테스트 스냅샷
+<details> <summary>브라우저 테스트</summary> <figure> <img src="./docs/c.png" width="820" alt="액세스 토큰 응답"> <figcaption>로그인 성공 후 액세스 토큰을 응답으로 수신</figcaption> </figure> <figure> <img src="./docs/d.png" width="820" alt="리프레시 토큰 쿠키"> <figcaption>리프레시 토큰은 HttpOnly 쿠키로 저장(SameSite=Lax, 로컬 http는 Secure=false)</figcaption> </figure> </details> <details> <summary>포스트맨 테스트</summary> <figure> <img src="./docs/f.png" width="820" alt="회원가입"> <figcaption>일반 회원가입</figcaption> </figure> <figure> <img src="./docs/g.png" width="820" alt="일반 로그인"> <figcaption>일반 로그인 → AT/RT 발급</figcaption> </figure> <figure> <img src="./docs/h.png" width="820" alt="내 정보 조회"> <figcaption>Bearer AT를 이용한 /api/users/me 응답</figcaption> </figure> </details> <details> <summary>DB 확인</summary> <figure> <img src="./docs/i.png" width="820" alt="DB 사용자 테이블 조회"> <figcaption>DB 사용자 테이블 조회</figcaption> </figure> </details> <details> <summary>Redis 리프레시 토큰 확인</summary> <figure> <img src="./docs/j.png" width="820" alt="로그아웃 시 RT 삭제"> <figcaption>로그아웃 시 Redis에서 Refresh Token 삭제</figcaption> </figure> <figure> <img src="./docs/k.png" width="820" alt="재발급 시 RT 회전"> <figcaption>재발급 시 Redis에 저장된 기존 Refresh Token 회전(갱신)</figcaption> </figure> </details> <details> <summary>스웨거 연동 (API 명세서)</summary> <figure> <img src="./docs/l.png" width="820" alt="Swagger UI"> <figcaption>Swagger UI 화면</figcaption> </figure> </details>
+
+---
+
+## 📖 스터디 방식
 - 유튜브 강의
-- Claude AI 활용
-- 기술 블로그 활용
+- AI 도구 보조 (Claude AI 활용)
+- 기술 블로그 검색
 
-### 📝 스터디 하면서 작성한 기술 블로그
+---
+
+## 📝 스터디 하면서 작성한 기술 블로그
 [단위테스트 테스트 코드 작성](https://velog.io/@mdy3722/Junit5%EC%99%80-AssertJ%EB%A5%BC-%ED%99%9C%EC%9A%A9%ED%95%98%EC%97%AC-%EB%8B%A8%EC%9C%84%ED%85%8C%EC%8A%A4%ED%8A%B8%EB%A5%BC-%EC%A7%84%ED%96%89)  
 [Mockito.Spy() 잘못된 사용으로 인한 문제 발생과 해결](https://velog.io/@mdy3722/%EC%9E%98%EB%AA%BB%EB%90%9C-Spy-%EC%82%AC%EC%9A%A9%EC%9D%B4-%EB%B6%80%EB%A5%B8-%ED%85%8C%EC%8A%A4%ED%8A%B8-%EC%8B%A4%ED%8C%A8)
+
 
 
 
