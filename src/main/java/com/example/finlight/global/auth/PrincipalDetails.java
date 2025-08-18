@@ -49,6 +49,11 @@ public class PrincipalDetails implements UserDetails, OAuth2User {
     }
 
     @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
     public boolean isAccountNonLocked() {
         return true;
     }

@@ -43,8 +43,9 @@ public class SecurityConfig {
                         session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/", "/api/users", "/oauth2/**", "/login", "/api/users/me").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/api/users/refresh").permitAll()
+                        .requestMatchers("/swagger-ui.html", "/swagger-ui/**", "/v3/api-docs/**", "/swagger-resources/**").permitAll()
+                        .requestMatchers("/", "/api/users", "/oauth2/**", "/login").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/users", "/api/users/refresh").permitAll()   // 일반 회원가입, 토큰 재발행
                         .anyRequest().authenticated()     // 그 외 요청은 인증 필요
                 )
 

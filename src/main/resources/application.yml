@@ -61,7 +61,13 @@ logging:
   pattern:
     console: "[%d{HH:mm:ss.SSS}][%-5level][%logger.%method:%line] - %msg%n"   # 예시 : [15:23:12.123][INFO ][com.example.MyService.doSomething:42] - 사용자 로그인 완료
   level:
+    root: info
     org:
       hibernate:
         type.descriptor.sql: trace   # 쿼리에 바인딩된 파라미터도 함께 출력
         SQL: debug                   # 실행된 SQL을 로그에 출력
+      springdoc: trace
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html

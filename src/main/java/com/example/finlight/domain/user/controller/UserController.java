@@ -3,6 +3,9 @@ package com.example.finlight.domain.user.controller;
 import com.example.finlight.domain.user.dto.req.UserSignupDTO;
 import com.example.finlight.domain.user.dto.res.UserResponseDTO;
 import com.example.finlight.domain.user.service.UserService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -34,13 +37,15 @@ public class UserController {
     }
 
     @PostMapping("/logout")
-    public ResponseEntity<?> logout(@AuthenticationPrincipal UUID userId,
+    @Operation(summary = "로그아웃", security = @SecurityRequirement(name = "JWT"))
+    public ResponseEntity<?> logout(@Parameter(hidden = true) @AuthenticationPrincipal UUID userId,
                                     HttpServletResponse response) {
         return userService.logout(userId, response);
     }
 
     @GetMapping("/me")
-    public ResponseEntity<?> me(@AuthenticationPrincipal UUID userId) {
+    @Operation(summary = "내 정보", security = @SecurityRequirement(name = "JWT"))
+    public ResponseEntity<?> me(@Parameter(hidden = true) @AuthenticationPrincipal UUID userId) {
         return userService.me(userId);
     }
 

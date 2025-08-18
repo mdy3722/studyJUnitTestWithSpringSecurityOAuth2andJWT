@@ -3,6 +3,7 @@ package com.example.finlight.global.exception;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @RestControllerAdvice
@@ -37,6 +38,8 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorResponse> handleException(Exception ex) {
         // 중요한 에러 로그 남기기
         // log.error("Unhandled Exception", ex);
+        // 예외의 상세 내용을 콘솔에 출력
+        ex.printStackTrace();
 
         ErrorCode errorCode = ErrorCode.INTERNAL_SERVER_ERROR;
         ErrorResponse response = new ErrorResponse(
