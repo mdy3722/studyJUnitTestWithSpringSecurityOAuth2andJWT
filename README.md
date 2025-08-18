@@ -59,6 +59,18 @@
 
 # Swagger UI
 open http://localhost:8080/swagger-ui.html
+
+# ubuntu 실행 후 Redis 설치
+sudo apt updatge
+sudo apt install redis
+
+# Redis 서버 실행
+redis-server
+
+# Redis 접속 및 토큰 확인
+redis-cli
+keys *     # 키 목록 확인
+get [키 이름]   # 값 확인인
 ```
 
 ---
@@ -74,7 +86,71 @@ open http://localhost:8080/swagger-ui.html
 ---
 
 ## 📸 API 테스트 스냅샷
-<details> <summary>브라우저 테스트</summary> <figure> <img src="./docs/c.png" width="820" alt="액세스 토큰 응답"> <figcaption>로그인 성공 후 액세스 토큰을 응답으로 수신</figcaption> </figure> <figure> <img src="./docs/d.png" width="820" alt="리프레시 토큰 쿠키"> <figcaption>리프레시 토큰은 HttpOnly 쿠키로 저장(SameSite=Lax, 로컬 http는 Secure=false)</figcaption> </figure> </details> <details> <summary>포스트맨 테스트</summary> <figure> <img src="./docs/f.png" width="820" alt="회원가입"> <figcaption>일반 회원가입</figcaption> </figure> <figure> <img src="./docs/g.png" width="820" alt="일반 로그인"> <figcaption>일반 로그인 → AT/RT 발급</figcaption> </figure> <figure> <img src="./docs/h.png" width="820" alt="내 정보 조회"> <figcaption>Bearer AT를 이용한 /api/users/me 응답</figcaption> </figure> </details> <details> <summary>DB 확인</summary> <figure> <img src="./docs/i.png" width="820" alt="DB 사용자 테이블 조회"> <figcaption>DB 사용자 테이블 조회</figcaption> </figure> </details> <details> <summary>Redis 리프레시 토큰 확인</summary> <figure> <img src="./docs/j.png" width="820" alt="로그아웃 시 RT 삭제"> <figcaption>로그아웃 시 Redis에서 Refresh Token 삭제</figcaption> </figure> <figure> <img src="./docs/k.png" width="820" alt="재발급 시 RT 회전"> <figcaption>재발급 시 Redis에 저장된 기존 Refresh Token 회전(갱신)</figcaption> </figure> </details> <details> <summary>스웨거 연동 (API 명세서)</summary> <figure> <img src="./docs/l.png" width="820" alt="Swagger UI"> <figcaption>Swagger UI 화면</figcaption> </figure> </details>
+
+<details>
+  <summary>브라우저 테스트</summary>
+
+  <figure>
+    <img src="./docs/c.png" width="820" alt="액세스 토큰 응답">
+    <figcaption><strong>로그인 성공 후 액세스 토큰을 응답으로 수신</strong></figcaption>
+  </figure>
+
+  <figure>
+    <img src="./docs/d.png" width="820" alt="리프레시 토큰 쿠키">
+    <figcaption><strong>리프레시 토큰은 HttpOnly 쿠키로 저장(SameSite=Lax, 로컬 http는 Secure=false)</strong></figcaption>
+  </figure>
+</details>
+
+<details>
+  <summary>포스트맨 테스트</summary>
+
+  <figure>
+    <img src="./docs/f.png" width="820" alt="회원가입">
+    <figcaption><strong>일반 회원가입</strong></figcaption>
+  </figure>
+
+  <figure>
+    <img src="./docs/g.png" width="820" alt="일반 로그인">
+    <figcaption><strong>일반 로그인 → AccessToken/RefreshToken 발급</strong></figcaption>
+  </figure>
+
+  <figure>
+    <img src="./docs/h.png" width="820" alt="내 정보 조회">
+    <figcaption><strong>유저 정보 조회</strong></figcaption>
+  </figure>
+</details>
+
+<details>
+  <summary>DB 확인</summary>
+
+  <figure>
+    <img src="./docs/i.png" width="820" alt="DB 유저 테이블 조회">
+    <figcaption><strong>DB 유저 테이블 조회</strong></figcaption>
+  </figure>
+</details>
+
+<details>
+  <summary>Redis에 저장된 Refresh Token 확인</summary>
+
+  <figure>
+    <img src="./docs/j.png" width="820" alt="로그아웃 시 Refresh Token 삭제">
+    <figcaption><strong>로그아웃 시 Redis에서 Refresh Token 삭제</strong></figcaption>
+  </figure>
+
+  <figure>
+    <img src="./docs/k.png" width="820" alt="토큰 재발급 시 Refresh Token 회전">
+    <figcaption><strong>토큰 재발급 시 Redis에 저장된 기존 Refresh Token 회전(갱신)</strong></figcaption>
+  </figure>
+</details>
+
+<details>
+  <summary>스웨거 연동 (API 명세서)</summary>
+
+  <figure>
+    <img src="./docs/l.png" width="820" alt="Swagger UI">
+    <figcaption><strong>Swagger UI 화면</strong></figcaption>
+  </figure>
+</details>
 
 ---
 
@@ -88,6 +164,7 @@ open http://localhost:8080/swagger-ui.html
 ## 📝 스터디 하면서 작성한 기술 블로그
 [단위테스트 테스트 코드 작성](https://velog.io/@mdy3722/Junit5%EC%99%80-AssertJ%EB%A5%BC-%ED%99%9C%EC%9A%A9%ED%95%98%EC%97%AC-%EB%8B%A8%EC%9C%84%ED%85%8C%EC%8A%A4%ED%8A%B8%EB%A5%BC-%EC%A7%84%ED%96%89)  
 [Mockito.Spy() 잘못된 사용으로 인한 문제 발생과 해결](https://velog.io/@mdy3722/%EC%9E%98%EB%AA%BB%EB%90%9C-Spy-%EC%82%AC%EC%9A%A9%EC%9D%B4-%EB%B6%80%EB%A5%B8-%ED%85%8C%EC%8A%A4%ED%8A%B8-%EC%8B%A4%ED%8C%A8)
+
 
 
 
