@@ -31,13 +31,46 @@
 
 ---
 
-## 🧪 진행한 단위 테스트
+## 🧪 단위 테스트
 - **CustomOAuth2UserService**  
   신규 회원 → 회원가입, 기존 회원 → 로그인, 미지원 소셜 예외 처리
 - **UserService**  
   일반 회원가입, 토큰 재발행, 사용자 정보 조회, 로그아웃
 - **JwtUtil**  
   Access/Refresh 토큰 생성, 검증, 사용자 ID 추출
+
+---
+
+## 🧪 통합테스트
+
+**테스트 환경**
+- @SpringBootTest(webEnvironment = RANDOM_PORT)와 TestRestTemplate를 사용하여 실제 서블릿 컨테이너에서 전체 Spring Security 필터 체인을 포함한 HTTP 요청 흐름을 검증
+- H2 인메모리 DB 사용
+- Redis(로컬 6379)를 사용하여 RefreshTokenService를 실제 빈으로 주입해 리프레시 토큰의 저장/검증을 수행
+- 테스트 격리는 @DirtiesContext(BEFORE_EACH_TEST_METHOD)로 보장하고 @Transactional은 사용하지 않아, 롤백 없이 실제 커밋/조회 동작을 검증
+
+**이슈 & 해결**
+- 현상
+  중복 회원가입 테스트 실패. 테스트 코드의 userRepository.findAll() 호출 지점에서 UNIQUE(nickname) 제약 위반 발생.
+- 원인
+  - Hibernate 기본 FlushMode.AUTO는 SELECT 직전 flush 수행.
+  - 테스트가 @Transactional일 때, createTestUser()로 만든 유저는 테스트 트랜잭션 내부(미커밋)에만 존재.
+  - 반면 TestRestTemplate로 호출한 `POST /api/users`는 다른 트랜잭션에서 수행됨.
+  - 서비스의 중복 체크(findByUsername, existsByNickname)는 테스트 트랜잭션의 미커밋 데이터를 볼 수 없으므로 INSERT를 시도하고 커밋함.
+  - 이후 테스트 코드가 findAll()을 부르는 순간, 테스트 트랜잭션이 SELECT 전에 자동 flush 하며 테스트 측 INSERT가 DB로 밀림
+  - 이미 커밋된 동일 nickname과 부딪혀 UNIQUE 충돌이 findAll() 위치에서 표면화.
+- 해결
+  - 테스트 메서드의 @Transactional 제거(테스트 트랜잭션과 API 트랜잭션 가시성 이슈 해소)
+  - @DirtiesContext(BEFORE_EACH_TEST_METHOD) 로 매 테스트마다 컨텍스트/DB 초기화
+    
+**검증 대상**
+- 회원가입 `POST /api/users` → 201 Created 응답 및 DB 반영 확인
+- 로그인(JWT 발급) `POST /login` → 응답 본문에 accessToken, Set-Cookie에 HttpOnly refreshToken 들었는지 검증
+- Redis에 refreshToken 저장 여부 확인
+- 유저 정보 조회 `GET /api/users/me` → 200 Ok 응답 및 유저 정보 반환
+- 토큰 재발급 `POST /api/users/refresh` → 새 accessToken 발급 및 RT 회전(새 쿠키)
+- 로그아웃 `POST /api/users/logout` → refreshToken 쿠키 삭제(Max-Age=0), Redis의 refreshToken 제거
+- 중복 회원가입 차단 → 기존 유저 존재 시 409 Conflict 응답, DB 사용자 수(테스트 유저 1명) 검증
 
 ---
 
@@ -102,19 +135,5 @@ get [키 이름]   # 값 확인인
 [단위테스트 테스트 코드 작성](https://velog.io/@mdy3722/Junit5%EC%99%80-AssertJ%EB%A5%BC-%ED%99%9C%EC%9A%A9%ED%95%98%EC%97%AC-%EB%8B%A8%EC%9C%84%ED%85%8C%EC%8A%A4%ED%8A%B8%EB%A5%BC-%EC%A7%84%ED%96%89)  
 [Mockito.Spy() 잘못된 사용으로 인한 문제 발생과 해결](https://velog.io/@mdy3722/%EC%9E%98%EB%AA%BB%EB%90%9C-Spy-%EC%82%AC%EC%9A%A9%EC%9D%B4-%EB%B6%80%EB%A5%B8-%ED%85%8C%EC%8A%A4%ED%8A%B8-%EC%8B%A4%ED%8C%A8)  
 [Redis가 무엇일까?](https://velog.io/@mdy3722/Redis%EA%B0%80-%EB%AC%B4%EC%97%87%EC%9D%BC%EA%B9%8C)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
