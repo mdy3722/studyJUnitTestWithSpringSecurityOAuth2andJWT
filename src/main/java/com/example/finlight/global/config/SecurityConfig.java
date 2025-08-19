@@ -10,13 +10,17 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.access.AccessDeniedHandlerImpl;
+import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 
 @Configuration     // 이 클래스는 설정 파일이다.
@@ -47,6 +51,15 @@ public class SecurityConfig {
                         .requestMatchers("/", "/api/users", "/oauth2/**", "/login").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/users", "/api/users/refresh").permitAll()   // 일반 회원가입, 토큰 재발행
                         .anyRequest().authenticated()     // 그 외 요청은 인증 필요
+                )
+
+                // /api/** 에는 302 대신 401/403을 주도록 강제
+                .exceptionHandling(ex -> ex
+                        .defaultAuthenticationEntryPointFor(
+                                new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED),           // 인증 없음 → 401
+                                new AntPathRequestMatcher("/api/**")
+                        )
+                        .accessDeniedHandler(new AccessDeniedHandlerImpl())        // 인가 실패 → 403
                 )
 
                 .oauth2Login(oauth2 -> oauth2

@@ -26,6 +26,7 @@ dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.security:spring-security-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+	testImplementation 'com.h2database:h2'    // 통합 테스트에서 H2 메모리 DB 사용
 
 	// Lombok
 	compileOnly 'org.projectlombok:lombok'
