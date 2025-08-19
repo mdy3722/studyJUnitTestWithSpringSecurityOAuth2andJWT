@@ -51,7 +51,7 @@
 
 **이슈 & 해결**
 - 현상
-  중복 회원가입 테스트 실패. 테스트 코드의 userRepository.findAll() 호출 지점에서 UNIQUE(nickname) 제약 위반 발생.
+  - 중복 회원가입 테스트 실패. 테스트 코드의 userRepository.findAll() 호출 지점에서 UNIQUE(nickname) 제약 위반 발생.
 - 원인
   - Hibernate 기본 FlushMode.AUTO는 SELECT 직전 flush 수행.
   - 테스트가 @Transactional일 때, createTestUser()로 만든 유저는 테스트 트랜잭션 내부(미커밋)에만 존재.
@@ -135,5 +135,6 @@ get [키 이름]   # 값 확인인
 [단위테스트 테스트 코드 작성](https://velog.io/@mdy3722/Junit5%EC%99%80-AssertJ%EB%A5%BC-%ED%99%9C%EC%9A%A9%ED%95%98%EC%97%AC-%EB%8B%A8%EC%9C%84%ED%85%8C%EC%8A%A4%ED%8A%B8%EB%A5%BC-%EC%A7%84%ED%96%89)  
 [Mockito.Spy() 잘못된 사용으로 인한 문제 발생과 해결](https://velog.io/@mdy3722/%EC%9E%98%EB%AA%BB%EB%90%9C-Spy-%EC%82%AC%EC%9A%A9%EC%9D%B4-%EB%B6%80%EB%A5%B8-%ED%85%8C%EC%8A%A4%ED%8A%B8-%EC%8B%A4%ED%8C%A8)  
 [Redis가 무엇일까?](https://velog.io/@mdy3722/Redis%EA%B0%80-%EB%AC%B4%EC%97%87%EC%9D%BC%EA%B9%8C)
+
 
 
